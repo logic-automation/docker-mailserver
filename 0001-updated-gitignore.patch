@@ -1,0 +1,24 @@
+From 348ed37ce33f09f8122a77a948eca69080bd84d5 Mon Sep 17 00:00:00 2001
+From: logic-automation <andrew@logicautomationllc.com>
+Date: Wed, 11 Oct 2023 21:42:04 -0700
+Subject: [PATCH] updated gitignore
+
+---
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.gitignore b/.gitignore
+index 50d22a22..69d5b1f0 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -5,6 +5,7 @@
+ .env
+ docs/site/
+ docker-data/
++certbot/conf/
+ 
+ #################################################
+ ###  IDEs  ######################################
+-- 
+2.34.1
+

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./etc-letsencrypt:/etc/letsencrypt
+      - ./var-lib-letsencrypt:/var/lib/letsencrypt
+      - ./var-log-letsencrypt:/var/log/letsencrypt
+
+
+
+
+# run this command when you need to renew certs.
+# docker compose run certbot certonly --email "andrew@logicautomationllc.com" -d "mail.logicautomationllc.com" --agree-tos --manual --preferred-challenges dns
