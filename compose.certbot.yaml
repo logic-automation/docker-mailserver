@@ -7,7 +7,7 @@ services:
       - ./etc-letsencrypt:/etc/letsencrypt
       - ./var-lib-letsencrypt:/var/lib/letsencrypt
       - ./var-log-letsencrypt:/var/log/letsencrypt
-
+    command: certonly --email "andrew@logicautomationllc.com" -d "mail.logicautomationllc.com" --agree-tos --manual --preferred-challenges dns
 
 
 

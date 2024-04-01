@@ -3,7 +3,8 @@ services:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
     container_name: mailserver
     # Provide the FQDN of your mail server here (Your DNS MX record should point to this value)
-    hostname: mail.logicautomationllc.com
+    hostname: mail
+    domainname: logicautomationllc.com
     env_file: mailserver.env
     # More information about the mail-server ports:
     # https://docker-mailserver.github.io/docker-mailserver/latest/config/security/understanding-the-ports/
@@ -19,7 +20,7 @@ services:
       - ./docker-data/dms/mail-state/:/var/mail-state/
       - ./docker-data/dms/mail-logs/:/var/log/mail/
       - ./docker-data/dms/config/:/tmp/docker-mailserver/
-      - /etc/letsencrypt/:/etc/letsencrypt/  
+      - traefik_cert-data:/etc/letsencrypt
     restart: always
     stop_grace_period: 1m
     # Uncomment if using `ENABLE_FAIL2BAN=1`:
@@ -29,3 +30,66 @@ services:
       test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
       timeout: 3s
       retries: 0
+    # labels:
+    #   traefik.docker.network: traefik-public
+    #   traefik.enable: "true"
+    #   ### SMTP
+    #   traefik.tcp.routers.mail-smtp.entrypoints: mail-smtp
+    #   traefik.tcp.routers.mail-smtp.rule: HostSNI(`*`)
+    #   traefik.tcp.routers.mail-smtp.service: smtp
+    #   traefik.tcp.routers.mail-smtp.tls: "true"
+    #   traefik.tcp.routers.mail-smtp.tls.certresolver: le
+    #   traefik.tcp.services.smtp.loadbalancer.server.port: "25"
+    #   traefik.tcp.services.mail-smtp.loadbalancer.proxyProtocol.version: "1"
+    #   #traefik.tcp.routers.mail-smtp.tls.passthrough: true
+    #   ### submission
+    #   traefik.tcp.routers.mail-submission.entrypoints: mail-submission
+    #   traefik.tcp.routers.mail-submission.rule: HostSNI(`*`)
+    #   traefik.tcp.routers.mail-submission.service: submission
+    #   traefik.tcp.routers.mail-submission.tls: "true"
+    #   traefik.tcp.routers.mail-submission.tls.certresolver: le
+    #   traefik.tcp.services.submission.loadbalancer.server.port: "587"
+    #   traefik.tcp.services.mail-submission.loadbalancer.proxyProtocol.version: "1"
+    #   #traefik.tcp.routers.mail-submission.tls.passthrough: true
+    #   ### submissions
+    #   traefik.tcp.routers.mail-submissions.entrypoints: mail-submissions
+    #   traefik.tcp.routers.mail-submissions.rule: HostSNI(`*`)
+    #   traefik.tcp.routers.mail-submissions.service: submissions
+    #   traefik.tcp.routers.mail-submissions.tls: "true"
+    #   traefik.tcp.routers.mail-submissions.tls.certresolver: le
+    #   traefik.tcp.services.submissions.loadbalancer.server.port: "465"
+    #   traefik.tcp.services.mail-submissions.loadbalancer.proxyProtocol.version: "1"
+    #   #traefik.tcp.routers.mail-submissions.tls.passthrough: true
+    #   ### IMAP
+    #   traefik.tcp.routers.mail-imap.entrypoints: mail-imap
+    #   traefik.tcp.routers.mail-imap.rule: HostSNI(`*`)
+    #   traefik.tcp.routers.mail-imap.service: imap
+    #   traefik.tcp.routers.mail-imap.tls: "true"
+    #   traefik.tcp.routers.mail-imap.tls.certresolver: le
+    #   traefik.tcp.services.imap.loadbalancer.server.port: "143"
+    #   traefik.tcp.services.mail-imap.loadbalancer.proxyProtocol.version: "1"
+    #   #traefik.tcp.routers.mail-imap.tls.passthrough: true
+    #   ### IMAPs
+    #   traefik.tcp.routers.mail-imaps.entrypoints: mail-imaps
+    #   traefik.tcp.routers.mail-imaps.rule: HostSNI(`*`)
+    #   traefik.tcp.routers.mail-imaps.service: imaps
+    #   traefik.tcp.routers.mail-imaps.tls: "true"
+    #   traefik.tcp.routers.mail-imaps.tls.certresolver: le
+    #   traefik.tcp.services.imaps.loadbalancer.server.port: "993"
+    #   traefik.tcp.services.mail-imaps.loadbalancer.proxyProtocol.version: "2"
+    #   #traefik.tcp.routers.mail-imaps.tls.passthrough: true
+    #   traefik.tcp.routers.sieve.rule: HostSNI(`*`)
+    #   traefik.tcp.routers.sieve.entrypoints: sieve
+    #   traefik.tcp.routers.sieve.service: sieve
+    #   traefik.tcp.routers.sieve.tls: "true"
+    #   traefik.tcp.routers.sieve.tls.certresolver: le
+    #   traefik.tcp.services.sieve.loadbalancer.server.port: "4190"
+
+  # whoami:
+  #   image: docker.io/traefik/whoami:latest
+  #   labels:
+  #     - "traefik.http.routers.whoami.rule=Host(`mail.logicautomationllc.com`)"  
+
+volumes:
+  traefik_cert-data:
+    external: true
