@@ -12,4 +12,4 @@ services:
 
 
 # run this command when you need to renew certs.
-# docker compose run certbot certonly --email "andrew@logicautomationllc.com" -d "mail.logicautomationllc.com" --agree-tos --manual --preferred-challenges dns
+# docker compose -f compose.certbot.yaml run certbot certonly --email "andrew@logicautomationllc.com" -d "mail.logicautomationllc.com" --agree-tos --manual --preferred-challenges dns

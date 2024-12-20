@@ -85,10 +85,10 @@ services:
     #   traefik.tcp.routers.sieve.tls.certresolver: le
     #   traefik.tcp.services.sieve.loadbalancer.server.port: "4190"
 
-  # whoami:
-  #   image: docker.io/traefik/whoami:latest
-  #   labels:
-  #     - "traefik.http.routers.whoami.rule=Host(`mail.logicautomationllc.com`)"  
+  whoami:
+    image: docker.io/traefik/whoami:latest
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`mail.logicautomationllc.com`)"  
 
 volumes:
   traefik_cert-data:
