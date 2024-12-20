@@ -157,12 +157,14 @@ nav:
     - 'Tutorials':
       - 'Basic Installation': examples/tutorials/basic-installation.md
       - 'Mailserver behind Proxy': examples/tutorials/mailserver-behind-proxy.md
+      - 'Crowdsec': examples/tutorials/crowdsec.md
       - 'Building your own Docker image': examples/tutorials/docker-build.md
       - 'Blog Posts': examples/tutorials/blog-posts.md
     - 'Use Cases':
       - 'Forward-Only Mail-Server with LDAP': examples/use-cases/forward-only-mailserver-with-ldap-authentication.md
       - 'Customize IMAP Folders': examples/use-cases/imap-folders.md
       - 'iOS Mail Push Support': examples/use-cases/ios-mail-push-support.md
+      - 'Lua Authentication': examples/use-cases/auth-lua.md
   - 'FAQ' : faq.md
   - 'Contributing':
     - 'General Information': contributing/general.md

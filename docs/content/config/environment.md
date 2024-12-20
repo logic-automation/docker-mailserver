@@ -366,6 +366,10 @@ The purpose of this setting is to opt-out of starting an internal Redis instance
 
 This settings controls whether checks should be performed on emails coming from authenticated users (i.e. most likely outgoing emails). The default value is `0` in order to align better with SpamAssassin. **We recommend** reading through [the Rspamd documentation on scanning outbound emails][rspamd-scanning-outbound] though to decide for yourself whether you need and want this feature.
 
+!!! note "Not all checks and actions are disabled"
+
+    DKIM signing of e-mails will still happen.
+
 - **0** => No checks will be performed for authenticated users
 - 1 => All default checks will be performed for authenticated users
 
@@ -577,8 +581,10 @@ Note: activate this only if you are confident in your bayes database for identif
 
 ##### FETCHMAIL_PARALLEL
 
-  **0** => `fetchmail` runs with a single config file `/etc/fetchmailrc`
-  **1** => `/etc/fetchmailrc` is split per poll entry. For every poll entry a separate fetchmail instance is started  to allow having multiple imap idle configurations defined.
+- **0** => `fetchmail` runs with a single config file `/etc/fetchmailrc`
+- 1 => `/etc/fetchmailrc` is split per poll entry. For every poll entry a separate fetchmail instance is started to [allow having multiple imap idle connections per server][fetchmail-imap-workaround] (_when poll entries reference the same IMAP server_).
+
+[fetchmail-imap-workaround]: https://otremba.net/wiki/Fetchmail_(Debian)#Immediate_Download_via_IMAP_IDLE
 
 Note: The defaults of your fetchmailrc file need to be at the top of the file. Otherwise it won't be added correctly to all separate `fetchmail` instances.
 #### Getmail

@@ -8,10 +8,6 @@ Rspamd is a ["fast, free and open-source spam filtering system"][rspamd-homepage
 
 If you want to have a look at the default configuration files for Rspamd that DMS packs, navigate to [`target/rspamd/` inside the repository][dms-default-configuration]. Please consult the [section "The Default Configuration"](#the-default-configuration) section down below for a written overview.
 
-!!! note "AMD64 vs ARM64"
-
-    We are currently doing a best-effort installation of Rspamd for ARM64 (from the Debian backports repository for Debian 11). The current version difference as of 23rd Apr 2023: AMD64 is at version 3.5 | ARM64 is at version 3.4.
-
 [rspamd-homepage]: https://rspamd.com/
 [dms-default-configuration]: https://github.com/docker-mailserver/docker-mailserver/tree/master/target/rspamd
 
@@ -69,6 +65,10 @@ DMS does not supply custom values for DNS servers to Rspamd. If you need to use 
 
     This setting is enabled to not allow spam to proceed just because DNS requests did not succeed. It could deny legitimate e-mails to pass though too in case your DNS setup is incorrect or not functioning properly.
 
+### Logs
+
+You can find the Rspamd logs at `/var/log/mail/rspamd.log`, and the corresponding logs for [Redis](#persistence-with-redis), if it is enabled, at `/var/log/supervisor/rspamd-redis.log`. We recommend inspecting these logs (with `docker exec -it <CONTAINER NAME> less /var/log/mail/rspamd.log`) in case Rspamd does not work as expected.
+
 ### Modules
 
 You can find a list of all Rspamd modules [on their website][rspamd-docs-modules].
@@ -103,11 +103,11 @@ DMS brings sane default settings for Rspamd. They are located at `/etc/rspamd/lo
 
 !!! question "What is [`docker-data/dms/config/`][docs-dms-config-volume]?"
 
-If you want to overwrite the default settings and / or provide your own settings, you can place files at `docker-data/dms/config/rspamd/override.d/` (a directory that is linked to `/etc/rspamd/override.d/`, if it exists) to override Rspamd and DMS default settings. This directory will not do a complete file override, but a [forced override of the specific settings in that file][rspamd-docs-override-dir].
+If you want to overwrite the default settings and / or provide your own settings, you can place files at `docker-data/dms/config/rspamd/override.d/`. Files from this directory are copied to `/etc/rspamd/override.d/` during startup. These files [forcibly override][rspamd-docs-override-dir] Rspamd and DMS default settings.
 
 !!! warning "Clashing Overrides"
 
-    Note that when also [using the `rspamd-commands` file](#with-the-help-of-a-custom-file), files in `override.d` may be overwritten in case you adjust them manually and with the help of the file.
+    Note that when also [using the `custom-commands.conf` file](#with-the-help-of-a-custom-file), files in `override.d` may be overwritten in case you adjust them manually and with the help of the file.
 
 [rspamd-docs-override-dir]: https://www.rspamd.com/doc/faq.html#what-are-the-locald-and-overrided-directories
 [docs-dms-config-volume]: ../../faq.md#what-about-the-docker-datadmsconfig-directory
